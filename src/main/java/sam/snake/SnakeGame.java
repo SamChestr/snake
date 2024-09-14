@@ -3,19 +3,10 @@ package sam.snake;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Random;
 import javax.swing.*;
 
 public class SnakeGame extends JPanel implements ActionListener, KeyListener{
-    private class Tile {
-        int x;
-        int y;
-
-        Tile(int x, int y){
-            this.x = x;
-            this.y = y;
-        }
-    }
+    
     int boardWidth;
     int boardHeight;
     int tileSize = 25; 
@@ -25,8 +16,7 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
     ArrayList<Tile> snakeBody;
 
     //Food
-    Tile food;
-    Random random;
+    Food food;
 
     //game logic 
     Timer gameLoop;
@@ -45,9 +35,8 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
         snakeHead = new Tile(5,5);
         snakeBody = new ArrayList<Tile>();
 
-        food = new Tile (10, 10);
-        random = new Random();
-        placeFood();
+        food = new Food(boardHeight, boardWidth, tileSize);
+        food.placeFood();
 
         velocityX = 0;
         velocityY = 0;
@@ -72,7 +61,7 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
 
         //Food
         g.setColor(Color.red);
-        g.fillRect(food.x * tileSize, food.y * tileSize, tileSize, tileSize);
+        g.fillRect(food.tile.x * tileSize, food.tile.y * tileSize, tileSize, tileSize);
 
         //Snake Head
         g.setColor(Color.green);
@@ -95,20 +84,15 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener{
         }
     }
 
-    public void placeFood(){
-        food.x = random.nextInt(boardWidth/tileSize); //600/25 = 24
-        food.y = random.nextInt(boardHeight/tileSize);
-    }
-
     public boolean collision(Tile tile1, Tile tile2) {
         return tile1.x == tile2.x && tile1.y == tile2.y;
     }
 
     public void move() {
         //eat Food
-            if (collision (snakeHead, food)){
-            snakeBody.add(new Tile(food.x, food.y));
-            placeFood();
+            if (collision (snakeHead, food.tile)){
+            snakeBody.add(new Tile(food.tile.x, food.tile.y));
+            food.placeFood();
         }
 
         //Snake body
