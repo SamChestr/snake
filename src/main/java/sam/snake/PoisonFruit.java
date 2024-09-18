@@ -1,26 +1,27 @@
 package sam.snake;
 import java.util.Random;
 
-public class Food {
-    
+public class PoisonFruit
+ {
     Tile tile;
     Random random;
     int boardWidth, boardHeight, tileSize;
 
-    public Food(int boardWidth, int boardHeight, int tileSize){
-
+    public PoisonFruit(int boardWidth, int boardHeight, int tileSize) {
         tile = new Tile(10, 10);
         random = new Random();
 
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
         this.tileSize = tileSize;
+        
+        placePoisonFruit();
     }
 
-    public void placeFood(){
-        tile.x = random.nextInt(boardWidth/tileSize); //600/25 = 24
+    public void placePoisonFruit(){
+        tile.x = random.nextInt(boardWidth/tileSize); 
         tile.y = random.nextInt(boardHeight/tileSize);
-        //System.out.println("boardWidth = " + boardWidth + " tileSize = " + tileSize + " tile.x = " + tile.x);
+        
     }
 
 }
