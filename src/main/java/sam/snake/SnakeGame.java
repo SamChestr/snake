@@ -30,6 +30,7 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener {
     int velocityX;
     int velocityY;
     boolean gameOver = false;
+    private String deathMesage = "Snake Tried To Leave The Game!";
 
     SnakeGame(int boardWidth, int boardHeight) {
         this.boardWidth = boardWidth;
@@ -66,19 +67,17 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener {
     }
 
     public void draw(Graphics g) {
-        // grid
-        // g.setColor(Color.DARK_GRAY);
-        // for (int i = 0; i < boardWidth/tileSize; i++) {
-        // (x1, y1, x2, y2)
-        // g.drawLine(i*tileSize, 0, i*tileSize, boardHeight);
-        // g.drawLine(0, i*tileSize, boardWidth, i*tileSize);
-        // }
+        /*
+         * grid
+         * g.setColor(Color.DARK_GRAY);
+         * for (int i = 0; i < boardWidth/tileSize; i++) {
+         * (x1, y1, x2, y2)
+         * g.drawLine(i*tileSize, 0, i*tileSize, boardHeight);
+         * g.drawLine(0, i*tileSize, boardWidth, i*tileSize);
+         * }
+         */
         g.setFont(new Font("Arial", Font.PLAIN, 16));
-        if (gameOver) {
-            g.setColor(Color.red);
-            g.drawString("Game over: " + String.valueOf(snakeBody.size()), tileSize - 16, tileSize);
-        } else {
-            
+
         // Wall
         g.setColor(Color.white);
         wall.tiles.forEach((n) -> {
@@ -108,8 +107,15 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener {
             g.fillRect(snakePart.x * tileSize, snakePart.y * tileSize, tileSize, tileSize);
         }
 
-        // Score
-        
+        if (gameOver) {
+            g.setColor(Color.red);
+            g.drawString("Game Over: " + String.valueOf(snakeBody.size()), tileSize - 16, tileSize);
+            g.drawString(deathMesage, tileSize - 10, tileSize * 2);
+            g.drawString("Press R To Replay", tileSize - 10, tileSize * 3);
+
+        } else {
+            // Score
+            g.setColor(Color.green);
             g.drawString("Score: " + String.valueOf(snakeBody.size()), tileSize - 16, tileSize);
         }
     }
@@ -139,11 +145,24 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener {
             food2.placeFood();
             poison.add(new PoisonFruit(boardWidth, boardHeight, tileSize));
         }
+        // poison stacks on food bug
+        poison.forEach((n) -> {
+            if (collision(food1.tile, n.tile)) {
+                food1.placeFood();
+            }
+        });
+
+        poison.forEach((n) -> {
+            if (collision(food2.tile, n.tile)) {
+                food2.placeFood();
+            }
+        });
 
         // eat poison
         poison.forEach((n) -> {
             if (collision(snakeHead, n.tile)) {
                 gameOver = true;
+                deathMesage = "Snake Fell ill!";
             }
         });
 
@@ -170,6 +189,7 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener {
             // collide with the snake head
             if (collision(snakeHead, snakePart)) {
                 gameOver = true;
+                deathMesage = "Snake Ate His Tail!";
             }
         }
 
@@ -203,7 +223,36 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener {
         } else if (((e.getKeyCode() == KeyEvent.VK_RIGHT) || (e.getKeyCode() == KeyEvent.VK_D)) && velocityX != -1) {
             velocityX = 1;
             velocityY = 0;
+        } else if (e.getKeyCode() == KeyEvent.VK_R) {
+            gameOver = false;
+            setBackground(Color.black);
+            addKeyListener(this);
+            setFocusable(true);
+            
+            deathMesage = "Snake Tried To Leave The Game!";
+            
+            wall = new Wall(boardHeight, boardWidth, tileSize);
+    
+            snakeHead = new Tile(5, 5);
+            snakeBody = new ArrayList<Tile>();
+    
+            food1 = new Food(boardHeight, boardWidth, tileSize);
+            food1.placeFood();
+    
+            food2 = new Food(boardHeight, boardWidth, tileSize);
+            food2.placeFood();
+    
+            // poison = new PoisonFruit(boardWidth, boardHeight, tileSize);
+            // poison.placePoisonFruit();
+    
+            velocityX = 0;
+            velocityY = 0;
+    
+            //gameLoop = new Timer(100, this); // Standard speed 100
+            gameLoop.start();
+            poison = new LinkedList<PoisonFruit>();
         }
+
     }
 
     // Do not need

@@ -14,19 +14,19 @@ public class Wall {
         this.tileSize = tileSize;
         //Top Wall
         for(int x = 0; x < boardWidth/tileSize; x++){
-            tiles.add(new Tile(x, 0));
+            tiles.add(new Tile(x, -1));
         }
         //bottom Wall
         for(int x = 0; x < boardWidth/tileSize; x++){
-            tiles.add(new Tile(x, boardHeight/tileSize-1));
+            tiles.add(new Tile(x, boardHeight/tileSize));
         }
         //left Wall
         for(int y = 0; y < boardWidth/tileSize; y++){
-            tiles.add(new Tile(0, y));
+            tiles.add(new Tile(-1, y));
         }
         //right Wall
         for(int y = 0; y < boardWidth/tileSize; y++){
-            tiles.add(new Tile(boardWidth/tileSize-1, y));
+            tiles.add(new Tile(boardWidth/tileSize, y));
         }
     }
 
