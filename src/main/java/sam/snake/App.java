@@ -1,6 +1,7 @@
 package sam.snake;
 
 import javax.swing.*;
+import java.awt.CardLayout;
 
 public class App { 
     public static void main(String[] args) throws Exception{
@@ -8,15 +9,24 @@ public class App {
         int boardHeight = boardWidth;
 
         JFrame frame = new JFrame ("Snake");
-        frame.setVisible(true);
         frame.setSize(boardWidth, boardHeight);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        SnakeGame snakeGame = new SnakeGame(boardWidth, boardHeight);
-        frame.add(snakeGame);
-        frame.pack();
-        snakeGame.requestFocus();
+        JPanel cards = new JPanel(new CardLayout());
+        Settings settings = new Settings(cards);
+        cards.add(settings,"SETTINGS");
+
+
+        SnakeGame snakeGame = new SnakeGame(boardWidth, boardHeight, cards);
+        cards.add(snakeGame, "SNAKEGAME");
+        frame.add(cards);
+        //snakeGame.requestFocus();
+        frame.setVisible(true);
+        CardLayout layout = (CardLayout) (cards.getLayout());
+        layout.show(cards, "SNAKEGAME");
+        cards.transferFocus();
     }
+
 }
