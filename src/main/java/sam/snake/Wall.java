@@ -17,7 +17,7 @@ public class Wall {
             tiles.add(new Tile(x, -1));
         }
         //bottom Wall
-        for(int x = 0; x < boardWidth/tileSize; x++){
+        for(int x = 1; x < boardWidth/tileSize; x++){
             tiles.add(new Tile(x, boardHeight/tileSize));
         }
         //left Wall

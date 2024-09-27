@@ -19,7 +19,7 @@ public class App {
         cards.add(settings,"SETTINGS");
 
 
-        SnakeGame snakeGame = new SnakeGame(boardWidth, boardHeight, cards);
+        SnakeGame snakeGame = new SnakeGame(settings, boardWidth, boardHeight, cards);
         cards.add(snakeGame, "SNAKEGAME");
         frame.add(cards);
         //snakeGame.requestFocus();
