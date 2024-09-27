@@ -15,25 +15,34 @@ import javax.swing.JButton;
 public class Settings extends JPanel implements KeyListener, ActionListener {
 
     private final JPanel cards;
-    public boolean twoFood = true;
+    public boolean twoFood = false;
+    public boolean poisonOff = true;
     private int boardWidth, boardHeight, tileWidth, tileHeight;
     private JButton button;
+    // Poison Pill Button
+    private JButton plague;
 
     Settings(JPanel cards) {
 
         button = new JButton();
-        button.setBounds(250, 100, 100, 50);
+        button.setBounds(190, 100, 100, 50);
         button.addActionListener(this);
-        button.setText("ONE FRUIT");
+        button.setText("TWO FRUIT");
+
+        plague = new JButton();
+        plague.setBounds(310, 100, 100, 50);
+        plague.addActionListener(this);
+        plague.setText("POISON OFF");
         this.setLayout(null);
-        this.cards = cards;
+        this.cards = cards; 
         this.add(button);
+        this.add(plague);
         boardWidth = 600;
         boardHeight = 600;
         tileWidth = 25;
         tileHeight = 25;
         setPreferredSize(new Dimension(boardWidth, boardHeight));
-        setBackground(Color.WHITE);
+        setBackground(Color.black);
         addKeyListener(this);
         setFocusable(true);
     }
@@ -44,9 +53,9 @@ public class Settings extends JPanel implements KeyListener, ActionListener {
     }
 
     public void draw(Graphics g) {
-        g.setFont(new Font("Arial", Font.PLAIN, 40));
-        g.setColor(Color.BLACK);
-        g.drawString("SETTINGS", 200, 50);
+        g.setFont(new Font("Arial", Font.PLAIN, 60));
+        g.setColor(Color.GREEN);
+        g.drawString("SETTINGS", 150, 60);
     }
 
     @Override
@@ -56,9 +65,11 @@ public class Settings extends JPanel implements KeyListener, ActionListener {
             case KeyEvent.VK_ESCAPE:
                 CardLayout layout = (CardLayout) (cards.getLayout()); // Gets the card layout so you can change the
                                                                       // layout
+                
                 layout.show(cards, "SNAKEGAME");
                 cards.transferFocus();
                 break;
+                
         }
     }
 
@@ -67,23 +78,38 @@ public class Settings extends JPanel implements KeyListener, ActionListener {
 
         if (e.getSource() == button) {
             if (twoFood) {
-                setBackground(Color.green);
-                CardLayout layout = (CardLayout) (cards.getLayout());
-                layout.show(cards, "GAMEBOARD");
-                cards.transferFocus();
-                button.setText("TWO FRUIT");
-                twoFood = false;
-            } else if (twoFood == false) {
-                setBackground(Color.white);
                 CardLayout layout = (CardLayout) (cards.getLayout());
                 layout.show(cards, "GAMEBOARD");
                 cards.transferFocus();
                 button.setText("ONE FRUIT");
+                twoFood = false;
+            } else if (twoFood == false) {
+                CardLayout layout = (CardLayout) (cards.getLayout());
+                layout.show(cards, "GAMEBOARD");
+                cards.transferFocus();
+                button.setText("TWO FRUIT");
                 twoFood = true;
             }
 
         }
-        repaint();
+        
+        if (e.getSource() == plague) {
+            if (poisonOff) {
+                CardLayout layout = (CardLayout) (cards.getLayout());
+                layout.show(cards, "GAMEBOARD");
+                cards.transferFocus();
+                plague.setText("POISON ON");
+                poisonOff = false;
+            } else if (poisonOff == false) {
+                CardLayout layout = (CardLayout) (cards.getLayout());
+                layout.show(cards, "GAMEBOARD");
+                cards.transferFocus();
+                plague.setText("POISON OFF");
+                poisonOff = true;
+            }
+
+        }
+        
     }
 
     @Override
