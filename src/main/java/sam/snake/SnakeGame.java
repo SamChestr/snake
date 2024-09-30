@@ -53,6 +53,7 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener {
         snakeHead = new Tile(5, 5);
         snakeBody = new ArrayList<Tile>();
 
+        //places food
         food1 = new Food(boardHeight, boardWidth, tileSize);
         food1.placeFood();
 
@@ -168,11 +169,12 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener {
                 food1.placeFood();
             }
         });
+        if (settings.twoFood) {
         wall.tiles.forEach((n) -> {
             if (collision(food2.tile, n)) {
                 food2.placeFood();
             }
-        });
+        });}
 
         // poison stacks on food bug
         /*

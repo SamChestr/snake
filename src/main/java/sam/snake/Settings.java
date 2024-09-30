@@ -27,7 +27,7 @@ public class Settings extends JPanel implements KeyListener, ActionListener {
         button = new JButton();
         button.setBounds(190, 100, 100, 50);
         button.addActionListener(this);
-        button.setText("TWO FRUIT");
+        button.setText("ONE FRUIT");
 
         plague = new JButton();
         plague.setBounds(310, 100, 100, 50);
